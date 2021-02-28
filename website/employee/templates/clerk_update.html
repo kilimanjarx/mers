@@ -1,0 +1,71 @@
+{%extends 'base.html'%}
+{%block content%}
+{% if user.is_authenticated %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="container">
+  <form action="clerk_update" method="POST">
+    {% csrf_token %}
+      <div class="form-group">
+        <label>Employee Id</label>
+        {% if obj.address %}
+        <p>{{obj.address}}</p>
+        <a href="/employee/update" class="btn btn-primary">Update</a>
+        <!-- <button type="button" class="btn btn-primary">update</button> -->
+        {% else %}
+        <input type="text" name="user_id" class="form-control" id="address" placeholder="Input employee ID here. Please ensure employee are in the same section/division">
+      </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a type="button" class="btn btn-primary" href="index">Back</a>
+        {%endif%}
+  </form>
+</div>
+
+{% for obj in param %}
+
+<div class="card container mt-5">
+   
+  <form action="/employee/index" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label >Name</label>
+        <p>{{obj.name}}</p>
+      </div>
+      <div class="form-group">
+          <label >position</label>
+          <p>{{obj.position}}</p>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Division</label>
+          <p>{{obj.division}}</p>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Section</label>
+          <p>{{obj.section}}</p>
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          {% if obj.address%}
+          <input type="text" name="clerk_input_address" class="form-control mb-1" id="address" placeholder="Input employee's current address here" value="{{obj.address}}">
+          <button type="submit" class="btn btn-primary mb-1">Update</button>
+          {% else %}
+          <input type="text" name="clerk_input_address" class="form-control" id="address" placeholder="Input employee's current address here" >
+          
+        </div>
+        <button type="submit" class="btn btn-primary mb-1">Submit</button>
+        {% endif %}
+        <input hidden type="text" name="employee_id" value="{{obj.employee_id}}">
+    </form>
+    
+</div>
+{% endfor %}
+
+
+{% endif %}
+{%endblock%}

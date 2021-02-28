@@ -1,0 +1,53 @@
+{%extends 'base.html'%}
+{%block content%}
+{% if user.is_authenticated %}
+{% for obj in param %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% if obj.position == 'CLERK' or obj.position == 'SENIOR CLERK' %}
+    <div class="container">
+        <a type="button" href="clerk_update" class="btn btn-primary">Update for other employees</a>
+    </div>
+{%endif%}
+
+    <div class="container">
+    <form action="/employee/index" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label >Name</label>
+          <p>{{obj.name}}</p>
+        </div>
+        <div class="form-group">
+            <label >position</label>
+            <p>{{obj.position}}</p>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Division</label>
+            <p>{{obj.division}}</p>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Section</label>
+            <p>{{obj.section}}</p>
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            {% if obj.address %}
+            <p>{{obj.address}}</p>
+            <a href="/employee/update" class="btn btn-primary">Update</a>
+            <!-- <button type="button" class="btn btn-primary">update</button> -->
+            {% else %}
+            <input type="text" name="address" class="form-control" id="address" placeholder="Input your current address here">
+          </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            {%endif%}
+      </form>
+
+</div>
+{% endfor %}
+{% endif %}
+{%endblock%}

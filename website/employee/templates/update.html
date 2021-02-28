@@ -1,0 +1,42 @@
+{%extends 'base.html'%}
+{%block content%}
+{% if user.is_authenticated %}
+{% for obj in param %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="container">
+   
+    <form action="/employee/index" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label >Name</label>
+          <p>{{obj.name}}</p>
+        </div>
+        <div class="form-group">
+            <label >position</label>
+            <p>{{obj.position}}</p>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Division</label>
+            <p>{{obj.division}}</p>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Section</label>
+            <p>{{obj.section}}</p>
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" name="address" class="form-control" id="address" placeholder="Input your current address here" value="{{obj.address}}">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      
+</div>
+{% endfor %}
+{% endif %}
+{%endblock%}
